@@ -137,6 +137,8 @@ export interface Case {
   brief: string;
   /** 本案專屬背景圖（含關鍵物件）。未設定時退回場景通用背景。 */
   backdrop?: string;
+  /** 完整敘事場景已包含人物，呈現時不再疊加角色 cutout。 */
+  compositeScene?: boolean;
   /** 舞台上可點的關鍵物件 */
   props?: StageProp[];
   characters: Character[];

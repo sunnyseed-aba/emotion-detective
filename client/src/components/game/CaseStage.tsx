@@ -56,7 +56,7 @@ export function CaseStage({
         style={{ background: "oklch(0.95 0.02 84 / 0.22)" }}
       />
 
-      {activeCase.characters.map((ch) => (
+      {!activeCase.compositeScene && activeCase.characters.map((ch) => (
         <img
           key={ch.id}
           src={ch.sprite}
