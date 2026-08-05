@@ -8,7 +8,7 @@ export const communityScene: GameScene = {
   id: "community",
   name: "社區",
   tagline: "在陌生的地方，我們特別容易猜錯別人的心。",
-  backdrop: "/manus-storage/v2-scene-community_51f524a6.jpg",
+  backdrop: "/game-assets/scenes/v2-scene-community_51f524a6.jpg",
   cases: [
     {
       id: "community-01",
@@ -16,7 +16,7 @@ export const communityScene: GameScene = {
       title: "滑倒之後",
       brief:
         "在公園的步道上，小豪跑步時滑了一下跌坐在地。旁邊有幾個人轉頭看過來。他馬上站起來，低著頭往旁邊走，臉頰紅紅的。",
-      backdrop: "/manus-storage/v4-scene-com01_68a2bad0.jpg",
+      backdrop: "/game-assets/scenes/v4-scene-com01_68a2bad0.jpg",
       props: [
         {
           id: "p1",
@@ -48,7 +48,7 @@ export const communityScene: GameScene = {
           id: "hao",
           name: "小豪",
           gender: "male",
-          sprite: "/manus-storage/v4-char-hao-com01_web_6330a160.png",
+          sprite: "/game-assets/characters/v4-char-hao-com01_web_6330a160.png",
           role: "focus",
           placement: { x: 46, y: 93, scale: 0.88, layer: 3 },
         },
@@ -151,7 +151,7 @@ export const communityScene: GameScene = {
       title: "長椅上的一個人",
       brief:
         "公園長椅上有位阿嬤一個人坐了很久。她的視線一直往下，手放在膝上沒有動，經過的人都沒有停下來。只有小宇猶豫了很久，才端了一杯水走過去。",
-      backdrop: "/manus-storage/v3-scene-com02_web_fa70b156.jpg",
+      backdrop: "/game-assets/scenes/v3-scene-com02_web_fa70b156.jpg",
       props: [
         {
           id: "p1",
@@ -183,7 +183,7 @@ export const communityScene: GameScene = {
           id: "grandma",
           name: "阿嬤與小宇",
           gender: "female",
-          sprite: "/manus-storage/v4-pair-com02_web_82ffbf6d.png",
+          sprite: "/game-assets/characters/v4-pair-com02_web_82ffbf6d.png",
           role: "focus",
           placement: { x: 52, y: 94, scale: 1.06, layer: 3 },
           isPair: true,

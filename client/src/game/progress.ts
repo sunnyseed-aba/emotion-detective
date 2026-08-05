@@ -4,7 +4,7 @@
  */
 import type { CaseStage, EmotionId, ProgressRecord } from "./types";
 
-const KEY = "emotion-detective-progress-v1";
+export const PROGRESS_STORAGE_KEY = "emotion-detective-progress-v1";
 
 const EMPTY: ProgressRecord = {
   completedCases: [],
@@ -16,7 +16,7 @@ const EMPTY: ProgressRecord = {
 
 export function loadProgress(): ProgressRecord {
   try {
-    const raw = localStorage.getItem(KEY);
+    const raw = localStorage.getItem(PROGRESS_STORAGE_KEY);
     if (!raw) return { ...EMPTY };
     return { ...EMPTY, ...(JSON.parse(raw) as ProgressRecord) };
   } catch {
@@ -26,7 +26,7 @@ export function loadProgress(): ProgressRecord {
 
 function save(p: ProgressRecord) {
   try {
-    localStorage.setItem(KEY, JSON.stringify(p));
+    localStorage.setItem(PROGRESS_STORAGE_KEY, JSON.stringify(p));
   } catch {
     /* 隱私模式或空間不足時靜默失敗，不影響遊戲進行 */
   }

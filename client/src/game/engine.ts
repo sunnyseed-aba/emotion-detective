@@ -55,13 +55,8 @@ export interface EngineState {
   ruledOut: string[];
 }
 
-export function useCaseEngine(activeCase: Case) {
-  const shuffledAbc = useMemo(
-    () => seededShuffle(activeCase.abcCards, activeCase.id),
-    [activeCase],
-  );
-
-  const [state, setState] = useState<EngineState>(() => ({
+export function createEngineState(): EngineState {
+  return {
     stage: "observe",
     stageIndex: 0,
     attempts: 0,
@@ -70,7 +65,98 @@ export function useCaseEngine(activeCase: Case) {
     abcPlacement: {},
     lastFeedback: null,
     ruledOut: [],
-  }));
+  };
+}
+
+export function revealClueState(state: EngineState, clueId: string): EngineState {
+  return state.revealedClues.includes(clueId)
+    ? state
+    : { ...state, revealedClues: [...state.revealedClues, clueId] };
+}
+
+export function submitChoiceState(
+  state: EngineState,
+  choiceId: string,
+  correct: boolean,
+  feedback: string,
+): EngineState {
+  return {
+    ...state,
+    attempts: state.attempts + 1,
+    lastFeedback: { correct, text: feedback },
+    ruledOut: correct ? state.ruledOut : [...state.ruledOut, choiceId],
+  };
+}
+
+export function placeAbcCardState(
+  state: EngineState,
+  activeCase: Case,
+  cardId: string,
+  slot: AbcSlot,
+): { state: EngineState; correct: boolean } {
+  const card = activeCase.abcCards.find((item) => item.id === cardId);
+  if (!card) return { state, correct: false };
+  const correct = card.slot === slot;
+  return {
+    correct,
+    state: {
+      ...state,
+      attempts: state.attempts + 1,
+      abcPlacement: correct
+        ? { ...state.abcPlacement, [cardId]: slot }
+        : state.abcPlacement,
+      lastFeedback: correct
+        ? null
+        : { correct: false, text: "這張卡再看一次。它是事情的開頭、中間，還是結果？" },
+    },
+  };
+}
+
+export function canAdvanceState(state: EngineState, activeCase: Case): boolean {
+  if (state.stage === "observe") {
+    return activeCase.clues
+      .filter((clue) => clue.essential)
+      .every((clue) => state.revealedClues.includes(clue.id));
+  }
+  if (state.stage === "abc") {
+    return activeCase.abcCards.every(
+      (card) => state.abcPlacement[card.id] === card.slot,
+    );
+  }
+  if (state.stage === "debrief") return false;
+  return state.lastFeedback?.correct === true;
+}
+
+export function advanceEngineState(
+  state: EngineState,
+  activeCase: Case,
+  correctOnFirstTry: boolean,
+): EngineState {
+  if (!canAdvanceState(state, activeCase)) return state;
+  const nextIndex = Math.min(state.stageIndex + 1, STAGE_ORDER.length - 1);
+  const result: StageResult = {
+    stage: state.stage,
+    correct: correctOnFirstTry,
+    attempts: Math.max(state.attempts, 1),
+  };
+  return {
+    ...state,
+    stage: STAGE_ORDER[nextIndex],
+    stageIndex: nextIndex,
+    attempts: 0,
+    lastFeedback: null,
+    ruledOut: [],
+    results: [...state.results, result],
+  };
+}
+
+export function useCaseEngine(activeCase: Case) {
+  const shuffledAbc = useMemo(
+    () => seededShuffle(activeCase.abcCards, activeCase.id),
+    [activeCase],
+  );
+
+  const [state, setState] = useState<EngineState>(createEngineState);
 
   /** 必要線索是否都已翻開 → 才能離開觀察階段 */
   const essentialClueIds = useMemo(
@@ -89,40 +175,23 @@ export function useCaseEngine(activeCase: Case) {
   );
 
   const revealClue = useCallback((clueId: string) => {
-    setState((s) =>
-      s.revealedClues.includes(clueId)
-        ? s
-        : { ...s, revealedClues: [...s.revealedClues, clueId] },
-    );
+    setState((s) => revealClueState(s, clueId));
   }, []);
 
   /** 前進到下一階段，並把本階段結果寫入進度層 */
   const advanceStage = useCallback(
     (correctOnFirstTry: boolean) => {
       setState((s) => {
-        const nextIndex = Math.min(s.stageIndex + 1, STAGE_ORDER.length - 1);
-        const result: StageResult = {
-          stage: s.stage,
-          correct: correctOnFirstTry,
-          attempts: Math.max(s.attempts, 1),
-        };
+        const next = advanceEngineState(s, activeCase, correctOnFirstTry);
+        if (next === s) return s;
         recordStageResult(
           activeCase.id,
           s.stage,
           correctOnFirstTry,
           s.stage === "name" ? activeCase.targetEmotion : undefined,
         );
-        const nextStage = STAGE_ORDER[nextIndex];
-        if (nextStage === "debrief") recordCaseComplete(activeCase.id);
-        return {
-          ...s,
-          stage: nextStage,
-          stageIndex: nextIndex,
-          attempts: 0,
-          lastFeedback: null,
-          ruledOut: [],
-          results: [...s.results, result],
-        };
+        if (next.stage === "debrief") recordCaseComplete(activeCase.id);
+        return next;
       });
     },
     [activeCase],
@@ -131,12 +200,7 @@ export function useCaseEngine(activeCase: Case) {
   /** 單選題作答（命名／讀心／策略共用） */
   const submitChoice = useCallback(
     (choiceId: string, correct: boolean, feedback: string) => {
-      setState((s) => ({
-        ...s,
-        attempts: s.attempts + 1,
-        lastFeedback: { correct, text: feedback },
-        ruledOut: correct ? s.ruledOut : [...s.ruledOut, choiceId],
-      }));
+      setState((s) => submitChoiceState(s, choiceId, correct, feedback));
       return correct;
     },
     [],
@@ -145,18 +209,11 @@ export function useCaseEngine(activeCase: Case) {
   /** ABC 卡放入槽位；放錯時回傳 false，UI 讓卡片輕輕退回 */
   const placeAbcCard = useCallback(
     (cardId: string, slot: AbcSlot) => {
-      const card = activeCase.abcCards.find((c) => c.id === cardId);
+      const card = activeCase.abcCards.find((item) => item.id === cardId);
       if (!card) return false;
-      const ok = card.slot === slot;
-      setState((s) => ({
-        ...s,
-        attempts: s.attempts + 1,
-        abcPlacement: ok ? { ...s.abcPlacement, [cardId]: slot } : s.abcPlacement,
-        lastFeedback: ok
-          ? null
-          : { correct: false, text: "這張卡再看一次。它是事情的開頭、中間，還是結果？" },
-      }));
-      return ok;
+      const correct = card.slot === slot;
+      setState((s) => placeAbcCardState(s, activeCase, cardId, slot).state);
+      return correct;
     },
     [activeCase],
   );
@@ -166,16 +223,7 @@ export function useCaseEngine(activeCase: Case) {
   }, []);
 
   const resetCase = useCallback(() => {
-    setState({
-      stage: "observe",
-      stageIndex: 0,
-      attempts: 0,
-      revealedClues: [],
-      results: [],
-      abcPlacement: {},
-      lastFeedback: null,
-      ruledOut: [],
-    });
+    setState(createEngineState());
   }, []);
 
   return {

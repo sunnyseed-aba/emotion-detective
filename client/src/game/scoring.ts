@@ -50,9 +50,15 @@ function pick(list: string[], seed: string): string {
 }
 
 export function scoreCase(results: StageResult[], caseId: string): CaseScore {
-  const scored = results.filter((r) => SCORED_STAGES.includes(r.stage));
+  // 每個階段只計一次，忽略結案等非計分階段與重複／無效紀錄。
+  const scored = SCORED_STAGES.flatMap((stage) => {
+    const result = results.find((r) => r.stage === stage);
+    return result ? [result] : [];
+  });
   const total = SCORED_STAGES.length;
-  const firstTry = scored.filter((r) => r.correct).length;
+  const firstTry = scored.filter(
+    (r) => r.correct && Number.isFinite(r.attempts) && r.attempts === 1,
+  ).length;
 
   // 60 分底線（完成即得），首次答對的階段各加 8 分
   const percent = Math.min(100, 60 + Math.round((firstTry / total) * 40));
@@ -82,4 +88,3 @@ const STAGE_HIT: Record<CaseStage, string[]> = {
 export function stageHitLine(stage: CaseStage, seed: string): string {
   return pick(STAGE_HIT[stage], seed + stage);
 }
-

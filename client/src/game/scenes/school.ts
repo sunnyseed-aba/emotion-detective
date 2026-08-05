@@ -8,7 +8,7 @@ export const schoolScene: GameScene = {
   id: "school",
   name: "學校",
   tagline: "很多誤會，是從沒說出口的猜測開始的。",
-  backdrop: "/manus-storage/v2-scene-school_07403420.jpg",
+  backdrop: "/game-assets/scenes/v2-scene-school_07403420.jpg",
   cases: [
     {
       id: "school-01",
@@ -16,7 +16,7 @@ export const schoolScene: GameScene = {
       title: "沒有舉手的那隻手",
       brief:
         "數學考卷發下來了。小宇看了一眼分數，把考卷折起來壓在桌下。接下來整堂課老師問問題，他都沒有舉手，即使他知道答案。",
-      backdrop: "/manus-storage/v3-scene-sch01_web_c6501dae.jpg",
+      backdrop: "/game-assets/scenes/v3-scene-sch01_web_c6501dae.jpg",
       props: [
         {
           id: "p1",
@@ -48,7 +48,7 @@ export const schoolScene: GameScene = {
           id: "yu",
           name: "小宇",
           gender: "male",
-          sprite: "/manus-storage/v3-char-yu-sch01_web_5b21709e.png",
+          sprite: "/game-assets/characters/v3-char-yu-sch01_web_5b21709e.png",
           role: "focus",
           placement: { x: 44, y: 79, scale: 0.94, layer: 2, sit: true },
         },
@@ -151,7 +151,7 @@ export const schoolScene: GameScene = {
       title: "沒被叫到的名字",
       brief:
         "下課時同學分隊打球，兩隊都念完了名字，小美站在旁邊沒被叫到。她的眉毛皺起來，用力把球踢向牆壁。",
-      backdrop: "/manus-storage/v3-scene-sch02_web_b5aae1d8.jpg",
+      backdrop: "/game-assets/scenes/v3-scene-sch02_web_b5aae1d8.jpg",
       props: [
         {
           id: "p1",
@@ -183,7 +183,7 @@ export const schoolScene: GameScene = {
           id: "mei",
           name: "小美",
           gender: "female",
-          sprite: "/manus-storage/v4-char-mei-sch02_web_5a1ed9c8.png",
+          sprite: "/game-assets/characters/v4-char-mei-sch02_web_5a1ed9c8.png",
           role: "focus",
           placement: { x: 38, y: 88, scale: 1, layer: 3 },
         },
@@ -191,7 +191,7 @@ export const schoolScene: GameScene = {
           id: "hao",
           name: "小豪",
           gender: "male",
-          sprite: "/manus-storage/v3-char-hao-sch02_web_ff9a0277.png",
+          sprite: "/game-assets/characters/v3-char-hao-sch02_web_ff9a0277.png",
           role: "related",
           placement: { x: 72, y: 82, scale: 0.86, layer: 2, flip: true },
         },
@@ -294,7 +294,7 @@ export const schoolScene: GameScene = {
       title: "還沒發生的失誤",
       brief:
         "下週有班級表演，小琳被分到獨唱一段。練習時間到了，她卻站在教室門口不肯進去，眼睛睜得很大，手指一直捏著衣角。",
-      backdrop: "/manus-storage/v3-scene-sch03_web_dfb5a256.jpg",
+      backdrop: "/game-assets/scenes/v3-scene-sch03_web_dfb5a256.jpg",
       props: [
         {
           id: "p1",
@@ -326,7 +326,7 @@ export const schoolScene: GameScene = {
           id: "lin",
           name: "小琳",
           gender: "female",
-          sprite: "/manus-storage/v3-char-lin-sch03_web_5d1938ef.png",
+          sprite: "/game-assets/characters/v3-char-lin-sch03_web_5d1938ef.png",
           role: "focus",
           placement: { x: 44, y: 87, scale: 1, layer: 3 },
         },

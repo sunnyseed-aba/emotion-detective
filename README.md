@@ -118,21 +118,20 @@
 
 | 項目 | 版本 |
 | --- | --- |
-| Node.js | >= 20（開發環境實測為 22.13.0） |
-| 套件管理器 | pnpm（專案附 `pnpm-lock.yaml`；亦可用 npm，但鎖檔會失效） |
+| Node.js | >= 20；`.nvmrc` 固定為 22.13.0 |
+| 套件管理器 | pnpm 10.4.1（由 `packageManager` 固定） |
 
 ### 安裝步驟
 
 ```bash
-# 1. 安裝 pnpm（若尚未安裝）
-npm install -g pnpm
-
-# 2. 安裝依賴
-pnpm install
+pnpm install --frozen-lockfile
+pnpm check
+pnpm test
+pnpm build
+pnpm start
 ```
 
-> **環境變數**：本專案不需要任何環境變數即可執行。若仍想建立 `.env`，內容範例與完整變數清單見 `docs/ENV_GUIDE.md`。
-> （原專案在 Manus 平台開發，平台保護 `.env` 系列檔案不可寫入，因此範本以文件形式提供。）
+> **環境變數**：本專案不需要任何環境變數即可執行。選用設定見 `.env.example` 與 `docs/ENV_GUIDE.md`。不得把密鑰放入 `VITE_` 變數。
 
 > **注意：`patches/wouter@3.7.1.patch`**
 > 專案透過 pnpm 的 `patchedDependencies` 對 wouter 打了一個補丁。使用 `pnpm install` 會自動套用；若改用 npm 或 yarn，需自行以 `patch-package` 等工具套用該補丁，否則路由行為可能異常。
@@ -150,7 +149,8 @@ pnpm dev
 ### 型別檢查
 
 ```bash
-npx tsc --noEmit
+pnpm check
+pnpm test
 ```
 
 目前狀態為零錯誤。修改後請維持這個狀態。
@@ -163,7 +163,7 @@ npx tsc --noEmit
 pnpm build
 ```
 
-輸出為純靜態檔案。實際輸出目錄請以 `vite.config.ts` 的 `build.outDir` 為準（模板預設為 `dist/`）。建置產物不含任何伺服器端程式碼，可直接由任何靜態主機服務。
+前端靜態檔輸出至 `dist/public/`，可直接部署到支援 SPA fallback 的靜態主機；同時會建立可選用的 Express server bundle `dist/index.js`。
 
 本地預覽建置結果：
 
@@ -175,9 +175,9 @@ pnpm preview
 
 ## 七、Deploy 方法
 
-### 重要前置步驟：圖片資產在地化
+### 圖片資產
 
-目前程式碼中的圖片路徑格式為 `/manus-storage/<檔名>`，這是 Manus WebDev 平台的 CDN 路徑。**若要部署到 Manus 平台以外的任何環境（Vercel、Netlify、Cloudflare Pages、自架 nginx 等），必須先執行一次在地化腳本**：
+19 張正式使用圖片已納入 `client/public/game-assets/`，應用只使用本地 `/game-assets/` URL。既有腳本可在來源資產更新後重新同步：
 
 ```bash
 # 先預覽會做哪些變更
@@ -192,14 +192,13 @@ node scripts/use-local-assets.mjs
 1. 把 `assets/images/**` 複製到 `client/public/game-assets/**`
 2. 把 `client/src` 內所有 `/manus-storage/xxx` 字串改寫為 `/game-assets/<類別>/xxx`
 
-執行後圖片即隨專案一起部署，不再依賴外部 CDN。**這是移交後第一件該做的事**，否則換環境後畫面會全部破圖。
+目前 repository 已完成同步，日常 build 不必再執行腳本。34 張 `assets/source/originals/` 原始素材完整保留。
 
 ### 部署到靜態主機
 
 ```bash
-node scripts/use-local-assets.mjs   # 一次性
 pnpm build
-# 將建置輸出目錄上傳至靜態主機
+# 將 dist/public 上傳至靜態主機
 ```
 
 因為是 SPA + client-side routing，主機端需設定 **SPA fallback**（所有未命中的路徑回傳 `index.html`），否則直接訪問 `/play/school/school-01` 會 404。
@@ -211,9 +210,14 @@ pnpm build
 | Cloudflare Pages | 自動處理 SPA |
 | nginx | `try_files $uri $uri/ /index.html;` |
 
-### 部署到 Manus WebDev 平台
+### 使用內建 Express server
 
-若繼續在原平台開發，**不需**執行在地化腳本（CDN 路徑本就有效），在管理介面建立 checkpoint 後點選 Publish 即可。
+```bash
+pnpm build
+PORT=3000 pnpm start
+```
+
+Express 只負責靜態檔與 SPA fallback；本專案沒有業務 API 或資料庫。若平台本身能設定 SPA fallback，不需要保留常駐 Express server。
 
 ---
 
@@ -228,7 +232,7 @@ emotion-detective-game/
 │   ├── GAME_DESIGN.md          角色、案件、題型、回饋、難度、計分
 │   ├── AI_PROMPTS.md           所有開發期使用的圖片生成 Prompt
 │   ├── DECISIONS.md            設計決策紀錄、放棄的方案、踩過的坑
-│   ├── ENV_GUIDE.md            環境變數說明（取代 .env.example）
+│   ├── ENV_GUIDE.md            環境變數補充說明
 │   ├── HANDOFF_CHECKLIST.md    移交驗收結果與資源盤點
 │   ├── TODO.md                 未完成功能、已知 bug、優先順序
 │   ├── CHANGELOG.md            開發歷程紀錄

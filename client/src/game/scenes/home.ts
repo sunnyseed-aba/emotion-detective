@@ -9,7 +9,7 @@ export const homeScene: GameScene = {
   id: "home",
   name: "家庭",
   tagline: "最親近的人，也最容易被誤會。",
-  backdrop: "/manus-storage/v2-scene-home_504687b5.jpg",
+  backdrop: "/game-assets/scenes/v2-scene-home_504687b5.jpg",
   cases: [
     {
       id: "home-01",
@@ -17,7 +17,7 @@ export const homeScene: GameScene = {
       title: "被收走的積木",
       brief:
         "小宇花了一整個下午蓋好一座積木塔。晚餐前他回到客廳，積木不見了，桌上只剩空空的地毯。他站在原地不動。",
-      backdrop: "/manus-storage/v3-scene-hom01_web_818da1b6.jpg",
+      backdrop: "/game-assets/scenes/v3-scene-hom01_web_818da1b6.jpg",
       props: [
         {
           id: "p1",
@@ -49,7 +49,7 @@ export const homeScene: GameScene = {
           id: "yu",
           name: "小宇",
           gender: "male",
-          sprite: "/manus-storage/v3-char-yu-hom01_web_938598cb.png",
+          sprite: "/game-assets/characters/v3-char-yu-hom01_web_938598cb.png",
           role: "focus",
           placement: { x: 38, y: 88, scale: 0.82, layer: 3 },
         },
@@ -152,7 +152,7 @@ export const homeScene: GameScene = {
       title: "被關掉的平板",
       brief:
         "小美正在畫一張快完成的圖，媽媽走過來把平板收走了。小美的眉毛皺起、雙手握成拳頭，身體往前傾。",
-      backdrop: "/manus-storage/v3-scene-hom02_web_c52d8a7b.jpg",
+      backdrop: "/game-assets/scenes/v3-scene-hom02_web_c52d8a7b.jpg",
       props: [
         {
           id: "p1",
@@ -184,7 +184,7 @@ export const homeScene: GameScene = {
           id: "mei",
           name: "小美與媽媽",
           gender: "female",
-          sprite: "/manus-storage/v4-pair-hom02_web_41d1d252.png",
+          sprite: "/game-assets/characters/v4-pair-hom02_web_41d1d252.png",
           role: "focus",
           placement: { x: 50, y: 92, scale: 1.02, layer: 3 },
           isPair: true,
