@@ -9,6 +9,7 @@ import { SCENES } from "@/game/scenes";
 import { STAGE_META, STAGE_ORDER } from "@/game/types";
 import { LOGO_URL } from "@/game/assets";
 import { ProgressSummary } from "@/components/game/ProgressSummary";
+import { BRAND } from "@/brand/brand";
 
 export default function Home() {
   const caseCount = SCENES.reduce((n, s) => n + s.cases.length, 0);
@@ -21,17 +22,27 @@ export default function Home() {
           <div className="flex items-center gap-4">
             <img src={LOGO_URL} alt="" className="h-16 w-16" aria-hidden />
             <div>
+              <p className="text-[0.8125rem] font-medium tracking-wide text-muted-foreground">
+                {BRAND.organization}
+              </p>
               <p className="font-file text-[0.8125rem] uppercase tracking-widest text-muted-foreground">
-                Case File · 情緒偵探社
+                Case File · {BRAND.appName}
               </p>
               <h1
                 className="text-[2.5rem] leading-tight lg:text-[3.25rem]"
                 style={{ color: "var(--ink)" }}
               >
-                情緒偵探社
+                {BRAND.appName}
               </h1>
+              <p className="font-file mt-1 text-[0.75rem] text-muted-foreground">
+                {BRAND.versionLabel}
+              </p>
             </div>
           </div>
+
+          <p className="mt-5 text-[0.8125rem] text-muted-foreground">
+            Powered by Sunny Seeds
+          </p>
 
           <p className="mt-8 max-w-xl text-[1.1875rem] leading-[1.85] text-foreground">
             先別急著結案。臉上在說一件事，心裡可能在說另一件。
