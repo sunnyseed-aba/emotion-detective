@@ -1,0 +1,4 @@
+# Optional public title. The current HTML title is used when omitted.
+VITE_APP_TITLE=情緒偵探社
+
+# No secrets or Manus-specific environment variables are required.
