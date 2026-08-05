@@ -18,6 +18,10 @@ export function getCase(sceneId: string, caseId: string) {
 }
 
 export const ALL_CASES = SCENES.flatMap((s) =>
-  s.cases.map((c) => ({ sceneId: s.id, sceneName: s.name, case: c })),
+  s.cases.map((c) => ({
+    sceneId: s.id,
+    sceneName: s.name,
+    backdrop: c.backdrop ?? s.backdrop,
+    case: c,
+  })),
 );
-

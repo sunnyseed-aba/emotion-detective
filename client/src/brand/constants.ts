@@ -11,9 +11,10 @@ export const WEBSITE = "";
 export const EMAIL = "";
 
 export const LOGO_PATHS = {
-  default: "/brand/logo.svg",
-  dark: "/brand/logo-dark.svg",
-  light: "/brand/logo-light.svg",
+  default: "/brand/logo.png",
+  dark: "/brand/logo.png",
+  light: "/brand/logo.png",
+  organization: "/brand/sunny-seeds-organization.png",
   favicon: "/brand/favicon.ico",
   appleTouchIcon: "/brand/apple-touch-icon.png",
 } as const;

@@ -15,6 +15,7 @@ export const homeScene: GameScene = {
       id: "home-01",
       fileNo: "HOM-01",
       title: "被收走的積木",
+      selSkills: ["perspectiveTaking", "communication"],
       brief:
         "小宇花了一整個下午蓋好一座積木塔。晚餐前他回到客廳，積木不見了，桌上只剩空空的地毯。他站在原地不動。",
       backdrop: "/game-assets/scenes/v5-scene-home-01.jpg",
@@ -151,6 +152,7 @@ export const homeScene: GameScene = {
       id: "home-02",
       fileNo: "HOM-02",
       title: "被關掉的平板",
+      selSkills: ["regulation", "flexibility"],
       brief:
         "小美正在畫一張快完成的圖，媽媽走過來把平板收走了。小美的眉毛皺起、雙手握成拳頭，身體往前傾。",
       backdrop: "/game-assets/scenes/v5-scene-home-02.jpg",

@@ -8,6 +8,8 @@ import { useEffect, useState } from "react";
 import { getScene } from "@/game/scenes";
 import { loadProgress } from "@/game/progress";
 import { EMOTIONS } from "@/game/emotions";
+import { SunnySeedsSignature } from "@/components/brand/SunnySeedsSignature";
+import { SEL_SKILLS } from "@/game/sel";
 
 export default function SceneCases() {
   const { sceneId } = useParams<{ sceneId: string }>();
@@ -30,15 +32,18 @@ export default function SceneCases() {
   }
 
   return (
-    <div className="min-h-screen">
+    <div className="sunny-page min-h-screen">
       <div className="mx-auto max-w-4xl px-5 py-10 lg:py-14">
-        <Link
-          href="/scenes"
-          className="hit-area inline-flex items-center gap-2 rounded-lg px-3 py-2 text-[1rem] text-muted-foreground transition-colors hover:text-foreground"
-        >
-          <ArrowLeft className="h-5 w-5" aria-hidden />
-          換個場景
-        </Link>
+        <div className="flex items-center justify-between gap-4">
+          <Link
+            href="/scenes"
+            className="hit-area inline-flex items-center gap-2 rounded-lg px-3 py-2 text-[1rem] text-muted-foreground transition-colors hover:text-foreground"
+          >
+            <ArrowLeft className="h-5 w-5" aria-hidden />
+            換個場景
+          </Link>
+          <SunnySeedsSignature />
+        </div>
 
         <div className="mt-8 flex flex-wrap items-end justify-between gap-4">
           <div>
@@ -86,6 +91,13 @@ export default function SceneCases() {
                     <h2 className="mt-1 text-[1.375rem]" style={{ color: "var(--ink)" }}>
                       {c.title}
                     </h2>
+                    <div className="mt-2 flex flex-wrap gap-2">
+                      {c.selSkills.map((skill) => (
+                        <span key={skill} className="sel-skill-chip">
+                          {SEL_SKILLS[skill].label}
+                        </span>
+                      ))}
+                    </div>
                     <p className="mt-2 line-clamp-2 text-[1.0625rem] leading-relaxed text-foreground">
                       {c.brief}
                     </p>

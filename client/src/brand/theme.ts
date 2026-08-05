@@ -3,14 +3,16 @@
  * Replace only these values after the official Sunny Seeds colors are approved.
  */
 export const BRAND_THEME = {
-  primary: "oklch(0.32 0.045 62)",
-  secondary: "oklch(0.915 0.022 84)",
+  primary: "#153a63",
+  secondary: "#eef2ef",
   accent: "oklch(0.9 0.028 82)",
   success: "oklch(0.55 0.09 148)",
-  warning: "oklch(0.62 0.08 70)",
+  warning: "#d5892e",
   error: "oklch(0.52 0.13 28)",
-  background: "oklch(0.945 0.016 84)",
-  surface: "oklch(0.975 0.01 86)",
+  background: "#f6f8f6",
+  surface: "#ffffff",
+  sun: "#d5892e",
+  seed: "#8aaa4e",
 } as const;
 
 export type BrandThemeToken = keyof typeof BRAND_THEME;

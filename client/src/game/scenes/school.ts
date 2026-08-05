@@ -14,6 +14,7 @@ export const schoolScene: GameScene = {
       id: "school-01",
       fileNo: "SCH-01",
       title: "沒有舉手的那隻手",
+      selSkills: ["emotionAwareness", "communication"],
       brief:
         "數學考卷發下來了。小宇看了一眼分數，把考卷折起來壓在桌下。接下來整堂課老師問問題，他都沒有舉手，即使他知道答案。",
       backdrop: "/game-assets/scenes/v5-scene-school-01.jpg",
@@ -150,6 +151,7 @@ export const schoolScene: GameScene = {
       id: "school-02",
       fileNo: "SCH-02",
       title: "沒被叫到的名字",
+      selSkills: ["regulation", "joiningIn"],
       brief:
         "下課時同學分隊打球，兩隊都念完了名字，小美站在旁邊沒被叫到。她的眉毛皺起來，用力把球踢向牆壁。",
       backdrop: "/game-assets/scenes/v5-scene-school-02.jpg",
@@ -294,6 +296,7 @@ export const schoolScene: GameScene = {
       id: "school-03",
       fileNo: "SCH-03",
       title: "還沒發生的失誤",
+      selSkills: ["emotionAwareness", "regulation"],
       brief:
         "下週有班級表演，小琳被分到獨唱一段。練習時間到了，她卻站在教室門口不肯進去，眼睛睜得很大，手指一直捏著衣角。",
       backdrop: "/game-assets/scenes/v5-scene-school-03.jpg",

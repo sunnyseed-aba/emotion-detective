@@ -9,6 +9,7 @@ import Home from "./pages/Home";
 import Scenes from "./pages/Scenes";
 import SceneCases from "./pages/SceneCases";
 import Play from "./pages/Play";
+import SkillCases from "./pages/SkillCases";
 
 
 function Router() {
@@ -16,6 +17,7 @@ function Router() {
     <Switch>
       <Route path={"/"} component={Home} />
       <Route path={"/scenes"} component={Scenes} />
+      <Route path={"/skills"} component={SkillCases} />
       <Route path={"/scenes/:sceneId"} component={SceneCases} />
       <Route path={"/play/:sceneId/:caseId"} component={Play} />
       <Route path={"/404"} component={NotFound} />

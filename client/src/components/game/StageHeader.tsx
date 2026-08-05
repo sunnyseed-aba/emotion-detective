@@ -3,6 +3,7 @@
  */
 import { cn } from "@/lib/utils";
 import { STAGE_META, STAGE_ORDER, type CaseStage } from "@/game/types";
+import { StageIcon } from "./StageIcon";
 
 interface Props {
   current: CaseStage;
@@ -21,7 +22,7 @@ export function StageHeader({ current }: Props) {
           <li
             key={stage}
             className={cn(
-              "flex items-center gap-2 rounded-lg border px-3 py-2 transition-colors duration-200",
+              "flex min-h-12 items-center gap-2 rounded-xl border px-3 py-2 transition-colors duration-200",
               active ? "border-transparent" : "border-border",
             )}
             style={
@@ -33,7 +34,7 @@ export function StageHeader({ current }: Props) {
             }
             aria-current={active ? "step" : undefined}
           >
-            <span className="font-file text-[0.8125rem]">{meta.step}</span>
+            <StageIcon stage={stage} className="h-4 w-4" />
             <span className="text-[0.9375rem] font-medium">{meta.label}</span>
           </li>
         );
@@ -41,4 +42,3 @@ export function StageHeader({ current }: Props) {
     </ol>
   );
 }
-

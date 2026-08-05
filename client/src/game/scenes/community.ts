@@ -14,6 +14,7 @@ export const communityScene: GameScene = {
       id: "community-01",
       fileNo: "COM-01",
       title: "滑倒之後",
+      selSkills: ["emotionAwareness", "regulation"],
       brief:
         "在公園的步道上，小豪跑步時滑了一下跌坐在地。旁邊有幾個人轉頭看過來。他馬上站起來，低著頭往旁邊走，臉頰紅紅的。",
       backdrop: "/game-assets/scenes/v5-scene-community-01.jpg",
@@ -150,6 +151,7 @@ export const communityScene: GameScene = {
       id: "community-02",
       fileNo: "COM-02",
       title: "長椅上的一個人",
+      selSkills: ["perspectiveTaking", "communication"],
       brief:
         "公園長椅上有位阿嬤一個人坐了很久。她的視線一直往下，手放在膝上沒有動，經過的人都沒有停下來。只有小宇猶豫了很久，才端了一杯水走過去。",
       backdrop: "/game-assets/scenes/v5-scene-community-02.jpg",

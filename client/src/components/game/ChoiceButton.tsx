@@ -5,9 +5,11 @@
 import { useEffect, useState } from "react";
 import { Check } from "lucide-react";
 import { cn } from "@/lib/utils";
+import type { ReactNode } from "react";
 
 interface Props {
   label: string;
+  icon?: ReactNode;
   onSelect: () => void;
   /** 已被判定為不是答案 → 淡化但仍可讀 */
   ruledOut?: boolean;
@@ -20,6 +22,7 @@ interface Props {
 
 export function ChoiceButton({
   label,
+  icon,
   onSelect,
   ruledOut,
   solved,
@@ -77,6 +80,7 @@ export function ChoiceButton({
           />
         ) : null}
       </span>
+      {icon}
       <span className={cn(solved && "font-medium")}>{label}</span>
     </button>
   );

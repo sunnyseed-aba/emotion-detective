@@ -3,11 +3,11 @@
  * 場景資料全部來自 SCENES 註冊表，新增場景無需修改本頁。
  */
 import { Link } from "wouter";
-import { ArrowLeft, ArrowRight } from "lucide-react";
+import { ArrowLeft, ArrowRight, SlidersHorizontal } from "lucide-react";
 import { useEffect, useState } from "react";
 import { SCENES } from "@/game/scenes";
 import { loadProgress } from "@/game/progress";
-import { LOGO_URL } from "@/game/assets";
+import { SunnySeedsSignature } from "@/components/brand/SunnySeedsSignature";
 
 export default function Scenes() {
   const [completed, setCompleted] = useState<string[]>([]);
@@ -17,7 +17,7 @@ export default function Scenes() {
   }, []);
 
   return (
-    <div className="min-h-screen">
+    <div className="sunny-page min-h-screen">
       <div className="mx-auto max-w-5xl px-5 py-10 lg:py-14">
         <div className="flex items-center justify-between gap-4">
           <Link
@@ -27,7 +27,9 @@ export default function Scenes() {
             <ArrowLeft className="h-5 w-5" aria-hidden />
             回事務所
           </Link>
-          <img src={LOGO_URL} alt="" className="h-10 w-10" aria-hidden />
+          <div className="flex items-center gap-3">
+            <SunnySeedsSignature />
+          </div>
         </div>
 
         <h1 className="mt-8 text-[2rem] lg:text-[2.5rem]" style={{ color: "var(--ink)" }}>
@@ -36,6 +38,16 @@ export default function Scenes() {
         <p className="mt-3 max-w-xl text-[1.0625rem] leading-[1.8] text-muted-foreground">
           每個地方都有不同的人、不同的規則，也就有不同的誤會。
         </p>
+        <p className="mt-2 text-[0.9375rem] font-medium text-[var(--brand-seed)]">
+          選一個你想練習的真實生活場景，不用照順序。
+        </p>
+        <Link
+          href="/skills"
+          className="mt-5 inline-flex min-h-12 items-center gap-2 rounded-xl border border-[var(--brand-seed)] bg-white/55 px-5 py-3 font-medium text-[var(--ink)]"
+        >
+          <SlidersHorizontal className="h-5 w-5" aria-hidden />
+          依學習目標選案件
+        </Link>
 
         <div className="mt-10 space-y-6">
           {SCENES.map((scene, i) => {
@@ -66,6 +78,9 @@ export default function Scenes() {
                     />
                   </div>
                   <div className="flex flex-1 flex-col justify-center gap-2 px-6 py-6">
+                    <span className="w-fit rounded-full bg-[color-mix(in_oklch,var(--brand-seed)_12%,white)] px-3 py-1 text-[0.8125rem] font-medium text-[var(--brand-seed)]">
+                      SEL 真實情境練習
+                    </span>
                     <p className="font-file text-[0.8125rem] uppercase tracking-widest text-muted-foreground">
                       Scene {String(i + 1).padStart(2, "0")}
                     </p>

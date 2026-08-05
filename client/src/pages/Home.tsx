@@ -7,20 +7,25 @@ import { Link } from "wouter";
 import { ArrowRight, Search } from "lucide-react";
 import { SCENES } from "@/game/scenes";
 import { STAGE_META, STAGE_ORDER } from "@/game/types";
-import { LOGO_URL } from "@/game/assets";
 import { ProgressSummary } from "@/components/game/ProgressSummary";
 import { BRAND } from "@/brand/brand";
+import { StageIcon } from "@/components/game/StageIcon";
+import { SunnySeedsSignature } from "@/components/brand/SunnySeedsSignature";
 
 export default function Home() {
   const caseCount = SCENES.reduce((n, s) => n + s.cases.length, 0);
 
   return (
-    <div className="min-h-screen">
+    <div className="sunny-page min-h-screen">
       <div className="mx-auto grid max-w-6xl gap-10 px-5 py-12 lg:grid-cols-[1fr_20rem] lg:gap-14 lg:py-20">
         {/* 主卷宗封面 */}
         <div>
           <div className="flex items-center gap-4">
-            <img src={LOGO_URL} alt="" className="h-16 w-16" aria-hidden />
+            <img
+              src={BRAND.logos.default}
+              alt={`${BRAND.organization} 標誌`}
+              className="h-24 w-24 object-contain mix-blend-multiply"
+            />
             <div>
               <p className="text-[0.8125rem] font-medium tracking-wide text-muted-foreground">
                 {BRAND.organization}
@@ -44,10 +49,16 @@ export default function Home() {
             Powered by Sunny Seeds
           </p>
 
-          <p className="mt-8 max-w-xl text-[1.1875rem] leading-[1.85] text-foreground">
+          <div className="sunny-welcome mt-8 max-w-xl">
+            <SunnySeedsSignature />
+            <p className="mt-3 text-[1.1875rem] leading-[1.85] text-foreground">
             先別急著結案。臉上在說一件事，心裡可能在說另一件。
             我們一起收集線索，把「他／她為什麼這樣想」找出來。
-          </p>
+            </p>
+            <p className="mt-3 text-[1rem] font-medium text-[var(--brand-seed)]">
+              今天先完成一件案子就很棒。
+            </p>
+          </div>
 
           <div className="mt-9 flex flex-wrap items-center gap-4">
             <Link
@@ -82,7 +93,7 @@ export default function Home() {
                       className="font-file flex h-9 w-9 shrink-0 items-center justify-center rounded-full text-[0.9375rem]"
                       style={{ background: "oklch(0.9 0.028 82)", color: "var(--ink)" }}
                     >
-                      {meta.step}
+                      <StageIcon stage={stage} />
                     </span>
                     <span className="text-[1.0625rem] font-medium">{meta.label}</span>
                     <span className="ml-auto font-file text-[0.875rem] text-muted-foreground">

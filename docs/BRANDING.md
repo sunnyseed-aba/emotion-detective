@@ -39,6 +39,15 @@ client/public/brand/
 
 ## Logo 放置位置
 
+目前已採用使用者提供的正式識別：
+
+- `client/public/brand/logo.png`：由第二張品牌方案合版裁切出的「方案二／書本知識版」，用於教學產品頁面。
+- `client/public/brand/sunny-seeds-organization.png`：Sunny Seeds ABA Learning Center 機構 Logo 原始檔。
+- `assets/source/brand/sunny-seeds-academy-source.png`：晴天種子學院三方案合版原始檔，保留供日後確認與重製，但不進入公開部署。
+- `assets/source/brand/detective-advisor-source.png`：小專家生成來源圖，保留於非公開素材區，不進入公開部署。
+
+產品介面目前使用 `logo.png`；不會修改 Logo 圖形或自行重畫。
+
 Vite 的 public root 是 `client/public/`，因此瀏覽器 URL 與檔案位置如下：
 
 | 用途 | 檔案 | URL |

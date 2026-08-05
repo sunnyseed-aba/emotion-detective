@@ -133,6 +133,8 @@ export interface Case {
   /** 檔案編號，如 SCH-01 */
   fileNo: string;
   title: string;
+  /** 實務選案用的 SEL／ABA 能力分類，可複選。 */
+  selSkills: import("./sel").SelSkillId[];
   /** 案件開場敘述 */
   brief: string;
   /** 本案專屬背景圖（含關鍵物件）。未設定時退回場景通用背景。 */

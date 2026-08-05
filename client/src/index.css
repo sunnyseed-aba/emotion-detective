@@ -48,41 +48,43 @@
    * 骨架色為「檔案墨褐」，底色為牛皮紙暖中性。介面色階刻意壓低，
    * 確保畫面中對比最高的元素永遠是人物的臉（見 VISUAL_SPEC.md）。
    */
-  --brand-primary: oklch(0.32 0.045 62);
-  --brand-secondary: oklch(0.915 0.022 84);
+  --brand-primary: #153a63;
+  --brand-secondary: #eef2ef;
   --brand-accent: oklch(0.9 0.028 82);
   --brand-success: oklch(0.55 0.09 148);
-  --brand-warning: oklch(0.62 0.08 70);
+  --brand-warning: #d5892e;
   --brand-error: oklch(0.52 0.13 28);
-  --brand-background: oklch(0.945 0.016 84);
-  --brand-surface: oklch(0.975 0.01 86);
+  --brand-background: #f6f8f6;
+  --brand-surface: #ffffff;
+  --brand-sun: #d5892e;
+  --brand-seed: #8aaa4e;
 
   --ink: var(--brand-primary);
-  --ink-soft: oklch(0.46 0.032 62);
+  --ink-soft: #4e6580;
   --paper: var(--brand-background);
-  --paper-deep: oklch(0.895 0.024 82);
+  --paper-deep: #e7ece8;
   --card-stock: var(--brand-surface);
 
   --radius: 0.75rem;
   --background: var(--paper);
-  --foreground: oklch(0.28 0.035 62);
+  --foreground: #263748;
   --card: var(--card-stock);
-  --card-foreground: oklch(0.28 0.035 62);
+  --card-foreground: #263748;
   --popover: var(--card-stock);
-  --popover-foreground: oklch(0.28 0.035 62);
+  --popover-foreground: #263748;
   --primary: var(--ink);
   --primary-foreground: oklch(0.965 0.012 86);
   --secondary: var(--brand-secondary);
   --secondary-foreground: oklch(0.34 0.035 62);
-  --muted: oklch(0.915 0.018 84);
-  --muted-foreground: oklch(0.505 0.028 66);
+  --muted: #edf1ee;
+  --muted-foreground: #61707e;
   --accent: var(--brand-accent);
   --accent-foreground: oklch(0.3 0.035 62);
   /* 不用於答錯提示；僅保留給破壞性操作（如清除進度） */
   --destructive: var(--brand-error);
   --destructive-foreground: oklch(0.975 0.01 86);
-  --border: oklch(0.845 0.026 80);
-  --input: oklch(0.845 0.026 80);
+  --border: #d6ded9;
+  --input: #d6ded9;
   --ring: oklch(0.55 0.05 62);
   --sidebar: oklch(0.925 0.022 84);
   --sidebar-foreground: oklch(0.3 0.035 62);
@@ -100,6 +102,51 @@
 
   --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
   --ease-in-out: cubic-bezier(0.77, 0, 0.175, 1);
+}
+
+.sunny-page {
+  position: relative;
+  isolation: isolate;
+}
+.sunny-page::before {
+  content: "";
+  position: fixed;
+  z-index: -1;
+  top: -6rem;
+  right: -5rem;
+  width: 18rem;
+  height: 18rem;
+  border-radius: 999px;
+  background: radial-gradient(circle, color-mix(in oklch, var(--brand-sun) 22%, transparent) 0 22%, transparent 64%);
+  pointer-events: none;
+}
+.sunny-signature { display: inline-flex; align-items: center; gap: .75rem; color: var(--ink-soft); }
+.sunny-signature__logo { width: 4rem; height: 4rem; object-fit: contain; mix-blend-mode: multiply; }
+.sunny-growth-trail { display: inline-flex; align-items: center; gap: .75rem; padding: .65rem .9rem; border: 1px solid var(--border); border-radius: 1rem; background: var(--brand-surface); box-shadow: 0 2px 8px rgb(21 58 99 / .06); }
+.sunny-growth-trail div span { display: grid; place-items: center; width: 2rem; height: 2rem; border-radius: 999px; color: var(--muted-foreground); background: var(--muted); }
+.sunny-growth-trail div span svg { width: 1.15rem; height: 1.15rem; }
+.sunny-growth-trail div span.is-grown { color: var(--brand-seed); background: color-mix(in oklch, var(--brand-seed) 14%, var(--brand-surface)); }
+.sunny-advisor { border: 2px solid color-mix(in oklch, var(--brand-sun) 58%, var(--border)); border-radius: .9rem; padding: 1rem; background: color-mix(in oklch, var(--brand-sun) 10%, var(--brand-surface)); box-shadow: 0 3px 12px rgb(21 58 99 / .08); }
+.sunny-advisor__title { color: var(--ink); font-weight: 700; }
+.sunny-advisor__character { flex: 0 0 auto; width: 5.5rem; height: 6.25rem; object-fit: contain; object-position: center bottom; }
+.sunny-advisor__button { display: inline-flex; align-items: center; gap: .4rem; min-height: 2.75rem; margin-top: .65rem; padding: .55rem .8rem; border: 1px solid var(--border); border-radius: .7rem; color: var(--ink); background: var(--brand-surface); font-size: .9375rem; }
+.sunny-notebook { border-left: 4px solid var(--brand-seed); border-radius: .75rem; padding: 1rem 1.1rem; background: color-mix(in oklch, var(--brand-seed) 8%, var(--brand-surface)); }
+.sunny-welcome { border-left: 5px solid var(--brand-sun); border-radius: 1rem; padding: 1.1rem 1.25rem; background: color-mix(in oklch, var(--brand-sun) 7%, var(--brand-surface)); box-shadow: 0 8px 24px oklch(0.3 0.03 62 / 0.06); }
+.sel-skill-chip { display: inline-flex; align-items: center; border-radius: 999px; padding: .3rem .65rem; background: color-mix(in oklch, var(--brand-seed) 11%, white); color: var(--ink); font-size: .8125rem; font-weight: 500; }
+.sel-skill-chip.is-upcoming { border: 1px dashed var(--border); background: transparent; color: var(--muted-foreground); }
+.sel-filter { min-height: 3rem; border: 1px solid var(--border); border-radius: .85rem; padding: .65rem 1rem; background: color-mix(in oklch, var(--brand-surface) 86%, transparent); color: var(--foreground); font-weight: 500; }
+.sel-filter.is-selected { border-color: var(--brand-seed); background: color-mix(in oklch, var(--brand-seed) 15%, white); color: var(--ink); }
+.emotion-option-icon { display: grid; place-items: center; flex: 0 0 auto; width: 2.75rem; height: 2.75rem; border-radius: .85rem; }
+@media (max-width: 420px) {
+  .sunny-advisor__character { width: 4.5rem; height: 5.25rem; }
+}
+@media (min-width: 1024px) {
+  .play-scroll-panel {
+    overscroll-behavior: contain;
+    scrollbar-gutter: stable;
+    scrollbar-width: thin;
+    scrollbar-color: color-mix(in oklch, var(--brand-primary) 25%, transparent) transparent;
+  }
 }
 
 .dark {
@@ -148,19 +195,19 @@
       ui-sans-serif,
       system-ui,
       sans-serif;
-    /* 牛皮紙纖維質感：極低對比的雙層斜向紋理，不干擾閱讀 */
+    /* 中性暖白底：只保留極淡紙張紋理，避免全頁偏黃。 */
     background-image:
       repeating-linear-gradient(
         62deg,
-        oklch(0.99 0.01 86 / 0.5) 0px,
-        oklch(0.99 0.01 86 / 0.5) 1px,
+        rgb(255 255 255 / 0.55) 0px,
+        rgb(255 255 255 / 0.55) 1px,
         transparent 1px,
         transparent 4px
       ),
       repeating-linear-gradient(
         -28deg,
-        oklch(0.86 0.03 78 / 0.28) 0px,
-        oklch(0.86 0.03 78 / 0.28) 1px,
+        rgb(21 58 99 / 0.018) 0px,
+        rgb(21 58 99 / 0.018) 1px,
         transparent 1px,
         transparent 5px
       );

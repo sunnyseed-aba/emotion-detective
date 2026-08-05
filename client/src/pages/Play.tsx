@@ -22,6 +22,14 @@ import { FeedbackNote } from "@/components/game/FeedbackNote";
 import { HitBanner } from "@/components/game/HitBanner";
 import { ScoreCard } from "@/components/game/ScoreCard";
 import { StageHeader } from "@/components/game/StageHeader";
+import {
+  DetectiveAdvisor,
+  DetectiveNotebookCard,
+  GrowthTrail,
+  STAGE_REINFORCEMENT,
+} from "@/components/game/DetectiveAdvisor";
+import { SunnySeedsSignature } from "@/components/brand/SunnySeedsSignature";
+import { EmotionIcon } from "@/components/game/EmotionIcon";
 import { cn } from "@/lib/utils";
 
 const CLUE_KIND_LABEL: Record<Clue["kind"], string> = {
@@ -61,6 +69,7 @@ function CaseRunner({
   const [nudge, setNudge] = useState<{ id: string; key: number } | null>(null);
   const [solvedChoice, setSolvedChoice] = useState<string | null>(null);
   const [openedProps, setOpenedProps] = useState<string[]>([]);
+  const [hintLevel, setHintLevel] = useState(0);
   const panelRef = useRef<HTMLDivElement>(null);
 
   const pronoun = pronounOf(activeCase);
@@ -68,6 +77,7 @@ function CaseRunner({
 
   useEffect(() => {
     setSolvedChoice(null);
+    setHintLevel(0);
     panelRef.current?.scrollTo({ top: 0, behavior: "smooth" });
   }, [state.stage]);
 
@@ -109,33 +119,37 @@ function CaseRunner({
     state.stage === "name" || state.stage === "mind" || state.stage === "strategy";
 
   return (
-    <div className="min-h-screen">
-      <header className="border-b border-border" style={{ background: "oklch(0.925 0.022 84)" }}>
-        <div className="mx-auto flex max-w-7xl flex-wrap items-center gap-x-5 gap-y-3 px-5 py-4">
-          <Link
-            href={`/scenes/${scene.id}`}
-            className="hit-area inline-flex items-center gap-2 rounded-lg px-3 py-2 text-[0.9375rem] text-muted-foreground transition-colors hover:text-foreground"
-          >
-            <ArrowLeft className="h-5 w-5" aria-hidden />
-            案件清單
-          </Link>
-          <div className="min-w-0">
-            <p className="font-file text-[0.8125rem] tracking-widest text-muted-foreground">
-              {activeCase.fileNo} · {scene.name}
-            </p>
-            <h1 className="truncate text-[1.375rem]" style={{ color: "var(--ink)" }}>
-              {activeCase.title}
-            </h1>
+    <div className="play-viewport sunny-page min-h-screen lg:flex lg:h-dvh lg:min-h-0 lg:flex-col lg:overflow-hidden">
+      <header className="shrink-0 border-b border-border bg-white/90">
+        <div className="mx-auto max-w-7xl px-5 py-4">
+          <div className="flex flex-wrap items-center gap-x-5 gap-y-3">
+            <Link
+              href={`/scenes/${scene.id}`}
+              className="hit-area inline-flex items-center gap-2 rounded-lg px-3 py-2 text-[0.9375rem] text-muted-foreground transition-colors hover:text-foreground"
+            >
+              <ArrowLeft className="h-5 w-5" aria-hidden />
+              案件清單
+            </Link>
+            <div className="min-w-0">
+              <p className="font-file text-[0.8125rem] tracking-widest text-muted-foreground">
+                {activeCase.fileNo} · {scene.name}
+              </p>
+              <h1 className="truncate text-[1.375rem]" style={{ color: "var(--ink)" }}>
+                {activeCase.title}
+              </h1>
+            </div>
+            <SunnySeedsSignature className="ml-auto" />
           </div>
-          <div className="ml-auto">
+          <div className="mt-4 flex flex-wrap items-center justify-between gap-4 border-t border-border/70 pt-4">
+            <GrowthTrail completed={Math.min(state.stageIndex, 5)} />
             <StageHeader current={state.stage} />
           </div>
         </div>
       </header>
 
-      <div className="mx-auto grid max-w-7xl gap-8 px-5 py-8 lg:grid-cols-[1.05fr_1fr] lg:gap-10">
+      <div className="mx-auto grid w-full max-w-7xl gap-8 px-5 py-8 lg:min-h-0 lg:flex-1 lg:grid-cols-[1.05fr_1fr] lg:gap-6 lg:py-4">
         {/* 左：舞台 */}
-        <div className="lg:sticky lg:top-8 lg:self-start">
+        <div className="play-scroll-panel lg:min-h-0 lg:overflow-y-auto lg:pr-2">
           <CaseStage
             scene={scene}
             activeCase={activeCase}
@@ -194,7 +208,7 @@ function CaseRunner({
         </div>
 
         {/* 右：卷宗任務面板 */}
-        <div ref={panelRef} className="space-y-6">
+        <div ref={panelRef} className="play-scroll-panel space-y-6 lg:min-h-0 lg:overflow-y-auto lg:pr-2">
           {!isDebrief ? (
             <div className="file-card stage-enter rounded-2xl px-6 py-6" key={state.stage}>
               <p className="font-file text-[0.8125rem] uppercase tracking-widest text-muted-foreground">
@@ -203,6 +217,16 @@ function CaseRunner({
               <h2 className="mt-2 text-[1.625rem]" style={{ color: "var(--ink)" }}>
                 {STAGE_META[state.stage].label}
               </h2>
+
+              {!isDebrief ? (
+                <DetectiveAdvisor
+                  stage={state.stage}
+                  activeCase={activeCase}
+                  pronoun={pronoun}
+                  level={hintLevel}
+                  onRequestHint={() => setHintLevel((level) => Math.min(level + 1, 3))}
+                />
+              ) : null}
 
               {/* 階段一：觀察 */}
               {state.stage === "observe" ? (
@@ -223,7 +247,7 @@ function CaseRunner({
                   {engine.observeComplete ? (
                     <HitBanner
                       line={stageHitLine("observe", activeCase.id)}
-                      detail="必查線索都看過了，可以進入下一步。"
+                      detail={`必查線索都看過了，可以進入下一步。${STAGE_REINFORCEMENT.observe}`}
                     />
                   ) : null}
                   <NextButton
@@ -240,11 +264,12 @@ function CaseRunner({
                   <p className="mt-4 text-[1.0625rem] leading-[1.8]">
                     {pronoun}現在的感覺，最接近哪一個？
                   </p>
-                  <div className="mt-5 space-y-3">
+                  <div className="mt-5 grid gap-3 sm:grid-cols-2">
                     {activeCase.emotionOptions.map((id) => (
                       <ChoiceButton
                         key={id}
                         label={EMOTIONS[id].label}
+                        icon={<EmotionIcon emotionId={id} />}
                         onSelect={() => handleEmotionChoice(id)}
                         ruledOut={state.ruledOut.includes(id)}
                         solved={solvedChoice === id}
@@ -296,7 +321,7 @@ function CaseRunner({
                   {engine.abcComplete ? (
                     <HitBanner
                       line={stageHitLine("abc", activeCase.id)}
-                      detail={`從左到右讀一次：因為前面發生了那件事，${pronoun}才做了這件事，最後變成了這個結果。`}
+                      detail={`從左到右讀一次：因為前面發生了那件事，${pronoun}才做了這件事，最後變成了這個結果。${STAGE_REINFORCEMENT.abc}`}
                     />
                   ) : null}
                   <NextButton
@@ -334,7 +359,7 @@ function CaseRunner({
                 state.lastFeedback.correct ? (
                   <HitBanner
                     line={stageHitLine(state.stage, activeCase.id)}
-                    detail={state.lastFeedback.text}
+                    detail={`${state.lastFeedback.text} ${STAGE_REINFORCEMENT[state.stage]}`}
                   />
                 ) : (
                   <FeedbackNote
@@ -359,6 +384,7 @@ function CaseRunner({
                   onClick={() => engine.advanceStage(state.attempts === 1)}
                 />
               ) : null}
+
             </div>
           ) : (
             /* 結案報告 */
@@ -409,6 +435,8 @@ function CaseRunner({
               </div>
 
               <p className="mt-6 text-[1.0625rem] leading-[1.85]">{activeCase.debrief}</p>
+
+              <DetectiveNotebookCard activeCase={activeCase} pronoun={pronoun} />
 
               <div className="mt-7 flex flex-wrap gap-3">
                 <Link
